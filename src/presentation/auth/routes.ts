@@ -12,7 +12,7 @@ export class AuthRoutes {
         router.post('/login', controller.loginUser)
         //router.post('/register', (req, res) => {controller.registerUser(req, res)})
         // es lo mismo pero con javascript se puede obviar.
-        router.post('/login', controller.registerUser)
+        router.post('/register', (res, req)=>{controller.registerUser(res, req)})
 
 
         return router;
