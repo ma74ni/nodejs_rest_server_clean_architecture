@@ -13,7 +13,7 @@ export class AuthRoutes {
         const authRepository = new AuthRepositoryImpl(datasource)
         const controller = new AuthController(authRepository)
 
-        router.post('/login', controller.loginUser)
+        router.post('/login', (res, req) => {controller.loginUser(res, req)})
         //router.post('/register', (req, res) => {controller.registerUser(req, res)})
         // es lo mismo pero con javascript se puede obviar.
         router.post('/register', (res, req)=>{controller.registerUser(res, req)})

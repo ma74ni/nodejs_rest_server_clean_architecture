@@ -43,4 +43,28 @@ export class AuthDatasourceImpl implements AuthDatasource{
             throw CustomError.internalServer()
         }
     }
+    async login(loginUserDto: RegisterUserDto): Promise<UserEntity> {
+        const {email, password} = loginUserDto
+
+        try{
+            const user = await UserModel.findOne({email: email})
+            if(!user){
+                throw CustomError.badRequest('Email or password is incorrect')
+            }
+
+            const isMatching = this.comparePassword(password, user.password)
+            if(!isMatching){
+                throw CustomError.badRequest('Email or password is incorrect')
+
+            }
+
+            return UserMapper.userEntityFromObject(user)   
+
+        }catch(error){
+            if(error instanceof CustomError){
+                throw error
+            }
+            throw CustomError.internalServer()
+        }
+    }
 }

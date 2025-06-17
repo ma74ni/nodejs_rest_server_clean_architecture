@@ -21,7 +21,9 @@ type SignToken = (payload: Object, duration?: string) => Promise<string | null>
 
 export class RegisterUser implements RegisterUserUseCase {
 
-    constructor(private readonly authRepository: AuthRepository, private readonly signToken: SignToken = JwtAdapter.generateToken) { 
+    constructor(
+        private readonly authRepository: AuthRepository,
+        private readonly signToken: SignToken = JwtAdapter.generateToken) { 
         // Inyección de dependencia del repositorio de autenticación
 
     }
