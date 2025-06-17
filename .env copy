@@ -2,3 +2,5 @@ PORT=3100
 
 MONGO_URL=mongodb://mongouser:123456@localhost:27017
 MONGO_DB_NAME=mystore
+
+JWT_SEED=15dec9e6d56d5de704ef974f256727bc9d03d4eb6cb33a9396db06b8d65af3d3
