@@ -20,7 +20,7 @@ export class AuthMiddleware{
         }
 
         const token = authorization.split(' ').at(1) || '';
-        console.log('Token:', token);
+        
 
         try{
             const payload = await JwtAdapter.validateToken<{id: string}>(token);
@@ -29,7 +29,6 @@ export class AuthMiddleware{
                 return
             }
 
-            console.log('Payload:', payload);
             const user = await UserModel.findById(payload.id);
             if(!user){
                 res.status(401).json({error: 'Invalid token'});//user not found
@@ -39,7 +38,7 @@ export class AuthMiddleware{
             if (!req.body) {
                 req.body = {};
             }
-            console.log('User found:', user);
+            
             req.body.user = user
 
             next(); // Aquí se debería validar el JWT
