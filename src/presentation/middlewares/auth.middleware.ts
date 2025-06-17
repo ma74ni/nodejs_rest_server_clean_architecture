@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { JwtAdapter } from "../../config";
+import { UserModel } from "../../data/mongodb";
 
 export class AuthMiddleware{
 
@@ -22,18 +23,24 @@ export class AuthMiddleware{
         console.log('Token:', token);
 
         try{
-            //todo: payload = JwtAdapter
-            const payload = await JwtAdapter.validateToken(token);
+            const payload = await JwtAdapter.validateToken<{id: string}>(token);
             if(!payload){
                 res.status(401).json({error: 'Invalid token'});
                 return
             }
 
-
+            console.log('Payload:', payload);
+            const user = await UserModel.findById(payload.id);
+            if(!user){
+                res.status(401).json({error: 'Invalid token'});//user not found
+                return
+            }
+            // se podría validar el rol del usuario, o si está activo, etc.
             if (!req.body) {
                 req.body = {};
             }
-            req.body.payload = payload
+            console.log('User found:', user);
+            req.body.user = user
 
             next(); // Aquí se debería validar el JWT
         } catch(error){
