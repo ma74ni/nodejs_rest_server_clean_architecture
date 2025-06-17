@@ -43,7 +43,7 @@ export class AuthController{
         .then(users => {
             res.json({
                 users,
-                token: req.body.token // Aquí se debería validar el JWT
+                token: req.body.payload // Aquí se debería validar el JWT
             })
         })
         .catch(error => res.status(500).json({ error: 'Internal Server Error' }));

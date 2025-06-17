@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
+import { JwtAdapter } from "../../config";
 
 export class AuthMiddleware{
 
-    static validateJWT = (req: Request, res: Response, next: NextFunction): void =>{
+    static validateJWT = async(req: Request, res: Response, next: NextFunction) =>{
         
         console.log('Validando JWT...');
         const authorization = req.header('Authorization');
@@ -22,10 +23,17 @@ export class AuthMiddleware{
 
         try{
             //todo: payload = JwtAdapter
+            const payload = await JwtAdapter.validateToken(token);
+            if(!payload){
+                res.status(401).json({error: 'Invalid token'});
+                return
+            }
+
+
             if (!req.body) {
                 req.body = {};
             }
-            req.body.token = token
+            req.body.payload = payload
 
             next(); // Aquí se debería validar el JWT
         } catch(error){
